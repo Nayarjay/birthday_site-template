@@ -35,6 +35,16 @@
       dans chaque chapitre, renseigne le champ  image:"chemin/vers/photo.jpg"
       (mets tes photos dans un dossier "images" à côté de ce fichier).
       Tant que le champ est vide (""), une zone repère s'affiche à la place.
+
+  🎵  POUR AJOUTER LA MUSIQUE (une par chapitre) :
+      dans chaque chapitre, renseigne le champ  music:"audio/xxx.mp3"
+      (mets tes fichiers .mp3 dans un dossier "audio" à côté de ce fichier).
+      La musique change toute seule quand on passe d'un chapitre à l'autre,
+      avec un fondu doux. Une petite barre de son (en haut à droite) permet
+      d'activer/couper le son et de régler le volume.
+      Le son est COUPÉ au départ : il faut cliquer sur le bouton haut-parleur
+      (les navigateurs interdisent de lancer un son sans un clic de l'utilisateur).
+      Champ vide "" = pas de musique pour ce chapitre (silence).
 =====================================================================
 -->
 
@@ -230,8 +240,43 @@ h2{
   color:var(--muted);animation:nudge 2.2s var(--ease) infinite;transition:opacity .5s}
 @keyframes nudge{0%,100%{transform:translateX(-50%)}50%{transform:translateX(calc(-50% + 9px))}}
 
+/* ---------------- Barre de son ---------------- */
+#sound{
+  position:fixed;top:clamp(10px,2vw,20px);right:clamp(10px,2vw,24px);z-index:60;
+  display:flex;align-items:center;gap:10px;
+  padding:7px 13px 7px 9px;border-radius:999px;
+  background:rgba(0,0,0,.42);border:1px solid var(--ring);backdrop-filter:blur(10px);
+  color:var(--ink);
+}
+#soundBtn{
+  width:32px;height:32px;flex:0 0 auto;border:0;border-radius:50%;cursor:pointer;padding:0;
+  display:grid;place-items:center;color:var(--ink);
+  background:rgba(255,255,255,.08);transition:.25s var(--ease);
+}
+#soundBtn:hover{background:rgba(255,255,255,.18);transform:scale(1.06)}
+#soundBtn svg{width:18px;height:18px}
+/* état MUET : on masque les ondes et on montre la croix */
+#soundBtn .waves{display:none}
+#soundBtn .cross{display:block}
+#soundBtn.on .waves{display:block}
+#soundBtn.on .cross{display:none}
+#soundBtn.on{background:linear-gradient(120deg,
+  color-mix(in srgb,var(--a) 55%,#12141c),
+  color-mix(in srgb,var(--b) 55%,#12141c))}
+.slabel{
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);max-width:15ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#vol{
+  width:82px;height:4px;cursor:pointer;
+  accent-color:color-mix(in srgb,var(--b) 80%,var(--ink));
+}
+
 /* ---------------- Responsive ---------------- */
 @media (max-width:860px){
+  #sound{gap:8px;padding:6px 10px 6px 7px}
+  #vol{width:64px}
+  .slabel{display:none}
   .inner{grid-template-columns:1fr;gap:22px;max-width:520px}
   .slide.flip .inner{direction:ltr}
   .frame{aspect-ratio:16/10}
@@ -262,6 +307,20 @@ h2{
 </div>
 <nav id="dots" aria-label="Aller à un chapitre"></nav>
 
+<!-- Barre de son : activer/couper + volume. Discrète, en haut à droite. -->
+<div id="sound" role="group" aria-label="Contrôle du son">
+  <button id="soundBtn" type="button" aria-pressed="false" aria-label="Activer le son">
+    <!-- icône haut-parleur (muet par défaut) -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 5 6 9H2v6h4l5 4V5z"/>
+      <g class="waves"><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a9 9 0 0 1 0 12"/></g>
+      <g class="cross"><path d="M22 9l-6 6"/><path d="M16 9l6 6"/></g>
+    </svg>
+  </button>
+  <span id="soundLabel" class="slabel">Son coupé</span>
+  <input id="vol" type="range" min="0" max="1" step="0.01" value="0.55" aria-label="Volume">
+</div>
+
 <script>
 /* =====================================================================
    ===== CONTENU A EDITER ============================================
@@ -285,6 +344,7 @@ const STORY = [
     tag:"Minecraft",
     title:"Poser les premiers blocs.",
     image:"",                                   /* 🖼️ IMAGE_SLIDE_1 */
+    music:"audio/minecraft.mp3",                /* 🎵 thème principal Minecraft */
     caption:"Notre toute première base",
     a:"#4caf50", b:"#8d6e63",
     bubbles:[
@@ -298,6 +358,7 @@ const STORY = [
     tag:"League of Legends",
     title:"Duo bot, cœur solide.",
     image:"",                                   /* 🖼️ IMAGE_SLIDE_2 */
+    music:"audio/league.mp3",                   /* 🎵 musique League of Legends */
     caption:"Blitzcrank & Draven — le duo",
     a:"#c8aa6e", b:"#0a97b0",
     bubbles:[
@@ -311,6 +372,7 @@ const STORY = [
     tag:"Salle de musculation",
     title:"On soulève, ensemble.",
     image:"",                                   /* 🖼️ IMAGE_SLIDE_3 */
+    music:"audio/calme.mp3",                    /* 🎵 quelque chose de calme */
     caption:"La même team, dans la vraie vie",
     a:"#ff5722", b:"#263238",
     bubbles:[
@@ -324,6 +386,7 @@ const STORY = [
     tag:"Valorant",
     title:"Poser le mur, lancer la mèche.",
     image:"",                                   /* 🖼️ IMAGE_SLIDE_4 */
+    music:"audio/valorant.mp3",                 /* 🎵 musique Valorant (optionnel) */
     caption:"Sage & Raze — coordination totale",
     a:"#ff4655", b:"#18e0c8",
     bubbles:[
@@ -337,6 +400,7 @@ const STORY = [
     tag:"Homies Company",
     title:"De joueurs à créateurs.",
     image:"",                                   /* 🖼️ IMAGE_SLIDE_5 */
+    music:"audio/lofi.mp3",                     /* 🎵 lofi — Homies Company */
     caption:"« Un bon jeu commence par une bonne équipe »",
     a:"#a855f7", b:"#22d3ee",
     bubbles:[
@@ -427,6 +491,8 @@ function setActive(i){
   prevBtn.disabled=i===0;
   nextBtn.disabled=i===slides.length-1;
   hint.style.opacity=i===0?'1':'0';
+  // change la musique d'ambiance vers ce chapitre (si le son est activé)
+  if(typeof playTrack==='function') playTrack(i);
 }
 
 /* Détecte le chapitre visible (sans dépendance externe) */
@@ -450,6 +516,68 @@ window.addEventListener('keydown',e=>{
 track.addEventListener('wheel',e=>{
   if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();track.scrollLeft+=e.deltaY;}
 },{passive:false});
+
+/* ---------------------------------------------------------------------
+   AUDIO — une musique d'ambiance par chapitre + barre de son.
+   · Le son démarre COUPÉ (les navigateurs bloquent l'autoplay sans clic).
+   · Un clic sur le bouton haut-parleur lance la musique du chapitre courant.
+   · À chaque changement de chapitre, la piste change avec un fondu doux.
+   · Le volume est réglable ; rien d'autre sur le site n'est impacté.
+   --------------------------------------------------------------------- */
+const audio=new Audio();
+audio.loop=true;audio.preload='none';
+const soundBtn=document.getElementById('soundBtn');
+const soundLabel=document.getElementById('soundLabel');
+const vol=document.getElementById('vol');
+let audioOn=false;            // l'utilisateur a-t-il activé le son ?
+let fadeTimer=null;
+
+/* fondu progressif du volume vers une cible */
+function fadeTo(target,ms,cb){
+  clearInterval(fadeTimer);
+  const start=audio.volume,steps=24;let n=0;
+  fadeTimer=setInterval(()=>{
+    n++;
+    audio.volume=Math.max(0,Math.min(1,start+(target-start)*(n/steps)));
+    if(n>=steps){clearInterval(fadeTimer);if(cb)cb();}
+  },Math.max(16,ms/steps));
+}
+
+/* joue (avec fondu) la musique du chapitre i */
+function playTrack(i){
+  if(!audioOn) return;
+  const src=STORY[i]&&STORY[i].music;
+  if(!src){                               // chapitre sans musique -> silence
+    soundLabel.textContent='—';
+    fadeTo(0,500,()=>audio.pause());
+    return;
+  }
+  const target=parseFloat(vol.value);
+  soundLabel.textContent=STORY[i].tag;
+  // déjà la bonne piste en cours de lecture : on ajuste juste le volume
+  if(audio.src&&audio.src.endsWith(src)&&!audio.paused){fadeTo(target,400);return;}
+  fadeTo(0,300,()=>{
+    audio.src=src;audio.volume=0;
+    const p=audio.play();
+    if(p&&p.then)p.then(()=>fadeTo(target,700))
+      .catch(()=>{soundLabel.textContent='Fichier audio manquant';});
+  });
+}
+
+/* bouton activer / couper le son */
+soundBtn.addEventListener('click',()=>{
+  audioOn=!audioOn;
+  soundBtn.classList.toggle('on',audioOn);
+  soundBtn.setAttribute('aria-pressed',audioOn?'true':'false');
+  soundBtn.setAttribute('aria-label',audioOn?'Couper le son':'Activer le son');
+  if(audioOn){playTrack(current);}
+  else{soundLabel.textContent='Son coupé';fadeTo(0,400,()=>audio.pause());}
+});
+
+/* curseur de volume */
+vol.addEventListener('input',()=>{
+  if(audioOn&&!audio.paused){clearInterval(fadeTimer);audio.volume=parseFloat(vol.value);}
+});
 
 setActive(0);
 

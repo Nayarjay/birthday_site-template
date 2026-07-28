@@ -287,6 +287,22 @@ h2{font-size:clamp(1.9rem,4.6vw,3.3rem);font-weight:800;letter-spacing:-.02em;li
   max-width:15ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #vol{width:82px;height:4px;cursor:pointer;accent-color:color-mix(in srgb,var(--b) 80%,var(--ink))}
 
+/* ---------------- Pop-up d'activation du son ---------------- */
+#soundPrompt{position:fixed;inset:0;z-index:90;display:grid;place-items:center;
+  padding:24px;background:rgba(2,4,10,.72);backdrop-filter:blur(10px);}
+#soundPrompt.hidden{display:none}
+.sound-prompt__card{width:min(92vw,420px);padding:clamp(22px,4vw,30px);border-radius:24px;
+  background:linear-gradient(140deg,rgba(16,18,28,.98),rgba(8,10,18,.96));
+  border:1px solid var(--ring);box-shadow:0 28px 70px -24px rgba(0,0,0,.8);text-align:center}
+.sound-prompt__card h3{font-size:clamp(1.2rem,3vw,1.45rem);margin-bottom:.6rem}
+.sound-prompt__card p{font-size:.95rem;line-height:1.6;color:var(--muted);margin-bottom:1.2rem}
+.sound-prompt__actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.sound-prompt__actions button{border:0;border-radius:999px;padding:.8rem 1.1rem;font-weight:700;
+  cursor:pointer;transition:transform .2s var(--ease),background .2s var(--ease)}
+.sound-prompt__actions button:hover{transform:translateY(-1px)}
+.sound-prompt__actions .primary{color:#08111d;background:linear-gradient(120deg,var(--a),var(--b))}
+.sound-prompt__actions .secondary{color:var(--ink);background:rgba(255,255,255,.08)}
+
 /* ---------------- Responsive ---------------- */
 @media (max-width:860px){
   .inner{grid-template-columns:1fr;gap:22px;max-width:520px}
@@ -322,6 +338,17 @@ h2{font-size:clamp(1.9rem,4.6vw,3.3rem);font-weight:800;letter-spacing:-.02em;li
   <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
 </div>
 <nav id="dots" aria-label="Aller à un chapitre"></nav>
+
+<div id="soundPrompt" role="dialog" aria-modal="true" aria-labelledby="soundPromptTitle">
+  <div class="sound-prompt__card">
+    <h3 id="soundPromptTitle">Activer le son</h3>
+    <p>Autorise la musique d’ambiance pour vivre l’histoire avec le bon rythme au lancement.</p>
+    <div class="sound-prompt__actions">
+      <button id="soundPromptEnable" class="primary" type="button">Activer le son</button>
+      <button id="soundPromptLater" class="secondary" type="button">Plus tard</button>
+    </div>
+  </div>
+</div>
 
 <!-- Barre de son : activer/couper + volume. Discrète, en haut à droite. -->
 <div id="sound" role="group" aria-label="Contrôle du son">
@@ -736,8 +763,23 @@ audio.loop=true;audio.preload='none';
 const soundBtn=document.getElementById('soundBtn');
 const soundLabel=document.getElementById('soundLabel');
 const vol=document.getElementById('vol');
+const soundPrompt=document.getElementById('soundPrompt');
+const soundPromptEnable=document.getElementById('soundPromptEnable');
+const soundPromptLater=document.getElementById('soundPromptLater');
 let audioOn=false;
 let fadeTimer=null;
+
+function hideSoundPrompt(){
+  if(soundPrompt) soundPrompt.classList.add('hidden');
+}
+function enableSound(){
+  audioOn=true;
+  soundBtn.classList.add('on');
+  soundBtn.setAttribute('aria-pressed','true');
+  soundBtn.setAttribute('aria-label','Couper le son');
+  hideSoundPrompt();
+  playTrack(current);
+}
 
 function fadeTo(target,ms,cb){
   clearInterval(fadeTimer);
@@ -769,13 +811,14 @@ soundBtn.addEventListener('click',()=>{
   if(audioOn){playTrack(current);}
   else{soundLabel.textContent='Son coupé';fadeTo(0,400,()=>audio.pause());}
 });
+soundPromptEnable.addEventListener('click',enableSound);
+soundPromptLater.addEventListener('click',hideSoundPrompt);
 vol.addEventListener('input',()=>{
   if(audioOn&&!audio.paused){clearInterval(fadeTimer);audio.volume=parseFloat(vol.value);}
 });
 
 setActive(0);
 
-/* --- Enhancement GSAP (facultatif) : parallax 3D sur le cadre --- */
 window.addEventListener('load',()=>{
   const fine=window.matchMedia('(pointer:fine)').matches;
   const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;

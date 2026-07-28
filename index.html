@@ -144,6 +144,26 @@ body{background:var(--bg);color:var(--ink);
 .gymwrap .bf{font-weight:900;letter-spacing:.06em;color:#ff6a00;
   font-size:clamp(1.1rem,3vw,1.7rem)}
 .gymwrap .bf b{color:#fff}
+/* carte invitation (verso de la dernière page) */
+.frame.invite{display:grid;place-items:center;text-align:center;padding:clamp(18px,4vw,34px);
+  background:
+    radial-gradient(80% 70% at 50% 0%,color-mix(in srgb,var(--sa) 34%,transparent),transparent 70%),
+    linear-gradient(160deg,#141019,#0b0a10)}
+.frame.invite .iv{display:flex;flex-direction:column;align-items:center;gap:.5em;
+  border:1px solid var(--ring);border-radius:18px;padding:clamp(16px,4vw,30px) clamp(14px,4vw,26px);
+  background:rgba(255,255,255,.03);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.iv-k{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.iv-age{font-weight:900;line-height:1;font-size:clamp(2.6rem,9vw,4.4rem);
+  background:linear-gradient(120deg,var(--sa),var(--sb));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 20px color-mix(in srgb,var(--sa) 50%,transparent))}
+.iv-sub{font-size:clamp(.95rem,2.4vw,1.15rem);font-weight:600;color:var(--ink);margin-bottom:.2em}
+.iv-meta{display:flex;flex-direction:column;gap:.5em;margin-top:.4em}
+.ivrow{display:inline-flex;align-items:center;gap:.6em;justify-content:center;
+  font-size:clamp(.9rem,2.2vw,1.05rem);font-weight:600;color:var(--ink);
+  padding:.4em .9em;border:1px solid var(--ring);border-radius:999px;background:rgba(255,255,255,.04)}
+.ivrow .ivi{font-size:1.05em}
+.iv-foot{margin-top:.7em;font-size:.82rem;letter-spacing:.04em;color:var(--muted)}
 .caption{margin-top:14px;font-size:.82rem;letter-spacing:.04em;color:var(--muted);text-align:center;
   opacity:0;transform:translateY(10px);transition:.7s var(--ease) .25s}
 .slide.active .caption{opacity:1;transform:none}
@@ -330,6 +350,8 @@ const IMG = {
   // Valorant — autres portraits (VERSO du flip)
   sageBust    : "https://media.valorant-api.com/agents/569fdd95-4d10-43ab-ca70-79becc718b46/bustportrait.png",
   razeBust    : "https://media.valorant-api.com/agents/f94c3b30-42be-e959-889c-5aa313dba261/bustportrait.png",
+  // Code Geass — fan art (recto de la page invitation)
+  geass       : "https://preview.redd.it/why-do-people-hate-suzaku-for-things-lelouch-does-too-v0-03amru4adwdf1.jpeg?width=640&crop=smart&auto=webp&s=99daaf16408ddafafc614adc4d528b4f5cbe0327",
   // Homies Company — logo (cadre) + jaquettes des jeux (déco)
   homiesLogo  : "https://homiescompany.eu/assets/img/logo_circle-KCpM9--.png",
   campfire    : "https://homiescompany.eu/uploads/691a54907270a.png",
@@ -369,7 +391,9 @@ const STORY = [
     title:"Poser les premiers blocs.", caption:"Notre toute première base",
     a:"#4caf50", b:"#8d6e63",
     music:"audio/minecraft.mp3",   /* 🎵 thème principal Minecraft */
-    frame:{type:'mc'},
+    frame:{type:'mc',
+           back:['images/minecraft.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/minecraft.jpg'},
     deco:[
       {t:'blk',v:'grass',   x:7, y:16, s:66, r:7,  d:0,  rot:-8, op:.95},
       {t:'blk',v:'stone',   x:15,y:72, s:50, r:8,  d:.6, rot:6,  op:.85},
@@ -389,7 +413,8 @@ const STORY = [
     a:"#c8aa6e", b:"#0a97b0",
     music:"audio/league.mp3",      /* 🎵 musique League of Legends */
     frame:{type:'images', fit:'cover', src:[IMG.draven, IMG.blitzcrank],
-           back:[IMG.dravenSplash, IMG.blitzSplash], backFit:'cover'},
+           back:['images/lol.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/lol.jpg'},
     deco:[
       {t:'img',src:IMG.dravenIcon, round:true, x:8, y:20, s:68, r:7, d:0,  rot:-6, op:.95},
       {t:'img',src:IMG.blitzIcon,  round:true, x:88,y:24, s:68, r:8, d:.5, rot:6,  op:.95},
@@ -426,7 +451,8 @@ const STORY = [
     a:"#ff4655", b:"#18e0c8",
     music:"audio/valorant.mp3",    /* 🎵 musique Valorant (optionnel) */
     frame:{type:'images', fit:'cover', src:[IMG.sage, IMG.raze],
-           back:[IMG.sageBust, IMG.razeBust], backFit:'cover'},
+           back:['images/valorant.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/valorant.jpg'},
     deco:[
       {t:'img',src:IMG.sageIcon, x:8, y:22, s:72, r:7, d:0,  rot:-6, op:.95},
       {t:'img',src:IMG.razeIcon, x:88,y:26, s:72, r:8, d:.5, rot:6,  op:.95},
@@ -443,7 +469,8 @@ const STORY = [
     a:"#a855f7", b:"#22d3ee",
     music:"audio/lofi.mp3",        /* 🎵 lofi — Homies Company */
     frame:{type:'images', fit:'contain', src:[IMG.homiesLogo],
-           back:[IMG.cleanDeal, IMG.catrepide], backFit:'contain'},
+           back:['images/homies.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/homies.jpg'},
     deco:[
       {t:'img',src:IMG.campfire,   x:7, y:18, s:120, r:8, d:0,  rot:-5, op:.9},
       {t:'img',src:IMG.neightmare, x:88,y:22, s:82,  r:9, d:.6, rot:6,  op:.9},
@@ -454,6 +481,30 @@ const STORY = [
       {from:"a", text:"Et si, cette fois, on créait nos propres jeux ?"},
       {from:"b", text:"Homies Company. Notre passion devenue projet."},
       {from:"a", text:"De joueurs à créateurs. On l’a fait — joyeux 25 ans 🎉"}
+    ]
+  },
+  {
+    chapter:"Chapitre 6 — Rendez-vous", tag:"Code Geass",
+    title:"Une dernière quête… IRL.", caption:"Retourne la carte 👉 l’invitation",
+    a:"#d3122a", b:"#c8a24a",
+    /* recto : fan art Code Geass (si le lien ne charge pas, mets images/geass.jpg)
+       verso : l'invitation d'anniversaire */
+    frame:{type:'images', fit:'cover', src:[IMG.geass],
+           phNote:"Fan art Code Geass — si l'image ne s'affiche pas, mets images/geass.jpg",
+           backType:'invite', backData:{
+             kicker:"Tu es convié·e",
+             age:"25 ans",
+             sub:"On fête ça ensemble 🎉",
+             date:"Samedi 1ᵉʳ août",
+             time:"12h00",
+             place:"Lac de Piolenc",
+             foot:"Ramène ta bonne humeur !"
+           }},
+    deco:[],
+    bubbles:[
+      {from:"a", text:"Prêt·e pour le boss final ? 😏"},
+      {from:"b", text:"Retourne la carte à droite pour voir l’invitation 🎁"},
+      {from:"a", text:"On t’attend pour souffler les 25 bougies !"}
     ]
   }
 ];
@@ -488,6 +539,21 @@ function frameCore(f){
     return `<div class="frame mc"><div class="iso"><i class="top"></i><i class="front"></i><i class="side"></i></div></div>`;
   if(f.type==='gym')
     return `<div class="frame gym"><div class="gymwrap">${DUMBBELL}<span class="bf"><b>BASIC</b>-FIT</span></div></div>`;
+  if(f.type==='invite'){
+    const d=f.data||{};
+    const meta=[
+      d.date?`<span class="ivrow"><span class="ivi">📅</span>${esc(d.date)}</span>`:'',
+      d.time?`<span class="ivrow"><span class="ivi">🕛</span>${esc(d.time)}</span>`:'',
+      d.place?`<span class="ivrow"><span class="ivi">📍</span>${esc(d.place)}</span>`:'',
+    ].join('');
+    return `<div class="frame invite"><div class="iv">
+        <span class="iv-k">${esc(d.kicker||'Invitation')}</span>
+        <span class="iv-age">${esc(d.age||'')}</span>
+        <span class="iv-sub">${esc(d.sub||'')}</span>
+        <div class="iv-meta">${meta}</div>
+        ${d.foot?`<span class="iv-foot">${esc(d.foot)}</span>`:''}
+      </div></div>`;
+  }
   // type images
   const fit=f.fit||'cover';
   const src=(f.src||[]).filter(Boolean);
@@ -502,15 +568,24 @@ function frameCore(f){
   return `<div class="frame imgs ${src.length>1?'duo':''} fit-${fit}">${ph}${imgs}</div>`;
 }
 
-/* --- rendu du cadre : simple, ou carte retournable si f.back est défini --- */
+/* --- rendu du cadre : simple, ou carte retournable si un verso est défini ---
+   Verso possible :
+     - back:[url…] (+ backFit/backNote)   -> image(s) au dos
+     - backType:'invite' (+ backData:{…}) -> carte spéciale (ex. invitation) */
 function frameHTML(f){
   f=f||{};
   const front=frameCore(f);
-  const back=(f.back||[]).filter(Boolean);
-  if(!back.length) return front;
-  const backFrame=frameCore({type:'images', fit:f.backFit||'cover', src:back, phNote:f.backNote});
+  let backFrame=null;
+  if(f.backType)
+    backFrame=frameCore({type:f.backType, data:f.backData||{}});
+  else{
+    const back=(f.back||[]).filter(Boolean);
+    if(back.length)
+      backFrame=frameCore({type:'images', fit:f.backFit||'cover', src:back, phNote:f.backNote});
+  }
+  if(!backFrame) return front;
   return `<div class="flipcard" tabindex="0" role="button" aria-pressed="false"
-      aria-label="Retourner l'image">
+      aria-label="Retourner la carte">
       <div class="flipcard-inner">
         <div class="flipface front">${front}</div>
         <div class="flipface back">${backFrame}</div>

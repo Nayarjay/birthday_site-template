@@ -120,6 +120,9 @@ body{background:var(--bg);color:var(--ink);
   color:var(--muted);padding:24px}
 .frame .ph .dash{position:absolute;inset:12px;border:2px dashed var(--ring);border-radius:16px}
 .frame .ph .pe{font-size:clamp(2.4rem,7vw,3.6rem)}
+/* placeholder DERRIÈRE les images : visible tant que la photo n'est pas ajoutée */
+.frame.imgs .ph.phback{position:absolute;inset:0;z-index:0;font-size:.9rem;line-height:1.5}
+.frame.imgs img{position:relative;z-index:1}
 /* scène Minecraft (bloc isométrique 3D) */
 .frame.mc{display:grid;place-items:center;perspective:640px;
   background:linear-gradient(160deg,#20303a,#0d141a)}
@@ -403,7 +406,9 @@ const STORY = [
     title:"On soulève, ensemble.", caption:"Basic-Fit — la même team, en vrai",
     a:"#ff6a00", b:"#0e2136",
     music:"audio/calme.mp3",       /* 🎵 quelque chose de calme */
-    frame:{type:'gym'},
+    frame:{type:'gym',
+           back:['images/muscu.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/muscu.jpg'},
     deco:[
       {t:'db', x:9, y:18, s:74, r:6, d:0,  rot:-12, op:.9},
       {t:'db', x:87,y:26, s:60, r:7, d:.6, rot:10,  op:.85},
@@ -490,7 +495,11 @@ function frameCore(f){
     return `<div class="frame"><div class="ph"><span class="dash"></span><span class="pe">📷</span>Zone image</div></div>`;
   const imgs=src.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer"
       onerror="this.style.display='none'">`).join('');
-  return `<div class="frame imgs ${src.length>1?'duo':''} fit-${fit}">${imgs}</div>`;
+  // repère "ajoute ta photo" affiché derrière : visible tant que l'image manque
+  const ph=f.phNote
+    ? `<div class="ph phback"><span class="dash"></span><span class="pe">📷</span>${esc(f.phNote)}</div>`
+    : '';
+  return `<div class="frame imgs ${src.length>1?'duo':''} fit-${fit}">${ph}${imgs}</div>`;
 }
 
 /* --- rendu du cadre : simple, ou carte retournable si f.back est défini --- */
@@ -499,7 +508,7 @@ function frameHTML(f){
   const front=frameCore(f);
   const back=(f.back||[]).filter(Boolean);
   if(!back.length) return front;
-  const backFrame=frameCore({type:'images', fit:f.backFit||'cover', src:back});
+  const backFrame=frameCore({type:'images', fit:f.backFit||'cover', src:back, phNote:f.backNote});
   return `<div class="flipcard" tabindex="0" role="button" aria-pressed="false"
       aria-label="Retourner l'image">
       <div class="flipcard-inner">

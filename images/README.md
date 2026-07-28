@@ -5,6 +5,7 @@ Dépose ici tes propres photos (au dos des cartes retournables).
 ## Attendu pour l'instant
 | Carte        | Fichier            | Rôle                                  |
 |--------------|--------------------|---------------------------------------|
+| Minecraft    | `minecraft.jpg`    | Photo affichée au **dos** de la carte |
 | Musculation  | `muscu.jpg`        | Photo affichée au **dos** de la carte |
 
 Tant que le fichier n'existe pas, un repère « Ajoute ta photo » s'affiche au dos

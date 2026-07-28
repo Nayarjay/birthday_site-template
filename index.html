@@ -369,7 +369,9 @@ const STORY = [
     title:"Poser les premiers blocs.", caption:"Notre toute première base",
     a:"#4caf50", b:"#8d6e63",
     music:"audio/minecraft.mp3",   /* 🎵 thème principal Minecraft */
-    frame:{type:'mc'},
+    frame:{type:'mc',
+           back:['images/minecraft.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/minecraft.jpg'},
     deco:[
       {t:'blk',v:'grass',   x:7, y:16, s:66, r:7,  d:0,  rot:-8, op:.95},
       {t:'blk',v:'stone',   x:15,y:72, s:50, r:8,  d:.6, rot:6,  op:.85},

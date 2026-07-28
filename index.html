@@ -81,9 +81,23 @@ body{background:var(--bg);color:var(--ink);
   box-shadow:inset 0 7px 0 rgba(255,255,255,.14),inset 0 -7px 0 rgba(0,0,0,.28)}
 .blk.grass{background:linear-gradient(#6ab04c 0 32%,#7a5a3a 32% 100%)}
 .blk.dirt{background:#7a5a3a}
-.blk.stone{background:#8f8f8f}
-.blk.gold{background:linear-gradient(#ffe08a,#d9a520)}
-.blk.diamond{background:linear-gradient(#8ff0ea,#33b6cf)}
+.blk.stone{background:linear-gradient(#9a9a9a,#6f6f6f)}
+/* minerais : base pierre + pépites colorées (façon bloc de minerai Minecraft) */
+.blk.diamond,.blk.gold,.blk.iron,.blk.redstone,.blk.emerald,.blk.coal,.blk.lapis{
+  background:
+    radial-gradient(circle at 28% 30%,var(--ore) 0 11%,transparent 12%),
+    radial-gradient(circle at 64% 26%,var(--ore) 0 8%,transparent 9%),
+    radial-gradient(circle at 44% 60%,var(--ore) 0 12%,transparent 13%),
+    radial-gradient(circle at 74% 68%,var(--ore) 0 9%,transparent 10%),
+    radial-gradient(circle at 22% 76%,var(--ore) 0 8%,transparent 9%),
+    linear-gradient(#9a9a9a,#6f6f6f)}
+.blk.diamond{--ore:#4fe3d8}
+.blk.gold{--ore:#f4c43b}
+.blk.iron{--ore:#e6c9b3}
+.blk.redstone{--ore:#e23b3b}
+.blk.emerald{--ore:#2ec96a}
+.blk.coal{--ore:#242424}
+.blk.lapis{--ore:#2f5bd0}
 /* icônes / vignettes flottantes (images) */
 .ic{object-fit:cover;border:1px solid var(--ring);background:#0d0f16;
   border-radius:16px;box-shadow:0 16px 34px -14px rgba(0,0,0,.75)}
@@ -130,11 +144,14 @@ body{background:var(--bg);color:var(--ink);
   transform-style:preserve-3d;transform:rotateX(-24deg) rotateY(-38deg);
   animation:spin 16s linear infinite}
 .iso i{position:absolute;width:var(--sz);height:var(--sz);border:2px solid rgba(0,0,0,.28)}
+/* cube plein : 6 faces (dessus herbe, dessous terre, 4 côtés herbe/terre) */
 .iso .top{transform:rotateX(90deg) translateZ(calc(var(--sz)/2));background:#6ab04c}
-.iso .front{transform:translateZ(calc(var(--sz)/2));
-  background:linear-gradient(#7a5a3a,#5e442c);box-shadow:inset 0 9px 0 #6ab04c}
-.iso .side{transform:rotateY(90deg) translateZ(calc(var(--sz)/2));
-  background:linear-gradient(#5e442c,#4a3521);box-shadow:inset 0 9px 0 #4c7a34}
+.iso .bottom{transform:rotateX(-90deg) translateZ(calc(var(--sz)/2));background:#5e442c}
+.iso .side{background:linear-gradient(#7a5a3a,#5e442c);box-shadow:inset 0 9px 0 #6ab04c}
+.iso .front{transform:translateZ(calc(var(--sz)/2))}
+.iso .back{transform:rotateY(180deg) translateZ(calc(var(--sz)/2))}
+.iso .left{transform:rotateY(-90deg) translateZ(calc(var(--sz)/2))}
+.iso .right{transform:rotateY(90deg) translateZ(calc(var(--sz)/2))}
 @keyframes spin{to{transform:rotateX(-24deg) rotateY(322deg)}}
 /* scène salle de sport (Basic-Fit) */
 .frame.gym{display:grid;place-items:center;background:linear-gradient(160deg,#13253d,#0a1420)}
@@ -395,11 +412,12 @@ const STORY = [
            back:['images/minecraft.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
            backNote:'Ajoute ta photo : images/minecraft.jpg'},
     deco:[
-      {t:'blk',v:'grass',   x:7, y:16, s:66, r:7,  d:0,  rot:-8, op:.95},
-      {t:'blk',v:'stone',   x:15,y:72, s:50, r:8,  d:.6, rot:6,  op:.85},
-      {t:'blk',v:'diamond', x:86,y:20, s:54, r:9,  d:1.1,rot:-5, op:.9},
-      {t:'blk',v:'gold',    x:90,y:64, s:46, r:7.5,d:.3, rot:8,  op:.9},
-      {t:'blk',v:'dirt',    x:79,y:87, s:40, r:8,  d:.9, rot:-10,op:.8},
+      {t:'blk',v:'grass',    x:7, y:16, s:66, r:7,  d:0,  rot:-8, op:.95},
+      {t:'blk',v:'coal',     x:15,y:72, s:50, r:8,  d:.6, rot:6,  op:.9},
+      {t:'blk',v:'diamond',  x:86,y:20, s:54, r:9,  d:1.1,rot:-5, op:.95},
+      {t:'blk',v:'gold',     x:90,y:64, s:46, r:7.5,d:.3, rot:8,  op:.95},
+      {t:'blk',v:'redstone', x:79,y:87, s:42, r:8,  d:.9, rot:-10,op:.9},
+      {t:'blk',v:'emerald',  x:22,y:40, s:38, r:8.5,d:1.4,rot:5,  op:.85},
     ],
     bubbles:[
       {from:"a", text:"Tu te rappelles notre première nuit sur Minecraft ?"},
@@ -472,10 +490,10 @@ const STORY = [
            back:['images/homies.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
            backNote:'Ajoute ta photo : images/homies.jpg'},
     deco:[
-      {t:'img',src:IMG.campfire,   x:7, y:18, s:120, r:8, d:0,  rot:-5, op:.9},
-      {t:'img',src:IMG.neightmare, x:88,y:22, s:82,  r:9, d:.6, rot:6,  op:.9},
-      {t:'img',src:IMG.cleanDeal,  x:84,y:80, s:120, r:7, d:1,  rot:-4, op:.85},
-      {t:'img',src:IMG.catrepide,  x:12,y:80, s:80,  r:8, d:.4, rot:7,  op:.85},
+      {t:'img',src:IMG.neightmare, x:90,y:14, s:80,  r:9, d:.6, rot:6,  op:.9},
+      {t:'img',src:IMG.cleanDeal,  x:89,y:82, s:110, r:7, d:1,  rot:-4, op:.85},
+      {t:'img',src:IMG.campfire,   x:3, y:10, s:96,  r:8, d:0,  rot:-5, op:.85},
+      {t:'img',src:IMG.catrepide,  x:4, y:84, s:74,  r:8, d:.4, rot:7,  op:.8},
     ],
     bubbles:[
       {from:"a", text:"Et si, cette fois, on créait nos propres jeux ?"},
@@ -536,7 +554,11 @@ const DUMBBELL=`<svg viewBox="0 0 64 32" fill="currentColor" aria-hidden="true">
 function frameCore(f){
   f=f||{};
   if(f.type==='mc')
-    return `<div class="frame mc"><div class="iso"><i class="top"></i><i class="front"></i><i class="side"></i></div></div>`;
+    return `<div class="frame mc"><div class="iso">
+        <i class="top"></i><i class="bottom"></i>
+        <i class="front side"></i><i class="back side"></i>
+        <i class="left side"></i><i class="right side"></i>
+      </div></div>`;
   if(f.type==='gym')
     return `<div class="frame gym"><div class="gymwrap">${DUMBBELL}<span class="bf"><b>BASIC</b>-FIT</span></div></div>`;
   if(f.type==='invite'){

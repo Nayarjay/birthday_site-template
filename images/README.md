@@ -3,10 +3,12 @@
 Dépose ici tes propres photos (au dos des cartes retournables).
 
 ## Attendu pour l'instant
-| Carte        | Fichier            | Rôle                                  |
-|--------------|--------------------|---------------------------------------|
-| Minecraft    | `minecraft.jpg`    | Photo affichée au **dos** de la carte |
-| Musculation  | `muscu.jpg`        | Photo affichée au **dos** de la carte |
+| Carte             | Fichier            | Rôle                                              |
+|-------------------|--------------------|---------------------------------------------------|
+| Minecraft         | `minecraft.jpg`    | Photo au **dos** de la carte                      |
+| League of Legends | `lol.jpg`          | Photo au **dos** de la carte                      |
+| Musculation       | `muscu.jpg`        | Photo au **dos** de la carte                      |
+| Code Geass (invit)| `geass.jpg`        | **Recto** de la page invitation (si le lien web échoue) |
 
 Tant que le fichier n'existe pas, un repère « Ajoute ta photo » s'affiche au dos
 (rien ne casse). Dès que tu déposes `muscu.jpg` ici, il apparaît automatiquement.

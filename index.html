@@ -409,8 +409,8 @@ const STORY = [
     a:"#4caf50", b:"#8d6e63",
     music:"audio/minecraft.mp3",   /* 🎵 thème principal Minecraft */
     frame:{type:'mc',
-           back:['images/minecraft.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
-           backNote:'Ajoute ta photo : images/minecraft.jpg'},
+           back:['images/minecraft.PNG'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/minecraft.PNG'},
     deco:[
       {t:'blk',v:'grass',    x:7, y:16, s:66, r:7,  d:0,  rot:-8, op:.95},
       {t:'blk',v:'coal',     x:15,y:72, s:50, r:8,  d:.6, rot:6,  op:.9},
@@ -431,8 +431,8 @@ const STORY = [
     a:"#c8aa6e", b:"#0a97b0",
     music:"audio/league.mp3",      /* 🎵 musique League of Legends */
     frame:{type:'images', fit:'cover', src:[IMG.draven, IMG.blitzcrank],
-           back:['images/lol.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
-           backNote:'Ajoute ta photo : images/lol.jpg'},
+           back:['images/lol.PNG'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/lol.PNG'},
     deco:[
       {t:'img',src:IMG.dravenIcon, round:true, x:8, y:20, s:68, r:7, d:0,  rot:-6, op:.95},
       {t:'img',src:IMG.blitzIcon,  round:true, x:88,y:24, s:68, r:8, d:.5, rot:6,  op:.95},
@@ -469,8 +469,8 @@ const STORY = [
     a:"#ff4655", b:"#18e0c8",
     music:"audio/valorant.mp3",    /* 🎵 musique Valorant (optionnel) */
     frame:{type:'images', fit:'cover', src:[IMG.sage, IMG.raze],
-           back:['images/valorant.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
-           backNote:'Ajoute ta photo : images/valorant.jpg'},
+           back:['images/valorant.png'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/valorant.png'},
     deco:[
       {t:'img',src:IMG.sageIcon, x:8, y:22, s:72, r:7, d:0,  rot:-6, op:.95},
       {t:'img',src:IMG.razeIcon, x:88,y:26, s:72, r:8, d:.5, rot:6,  op:.95},
@@ -487,8 +487,8 @@ const STORY = [
     a:"#a855f7", b:"#22d3ee",
     music:"audio/lofi.mp3",        /* 🎵 lofi — Homies Company */
     frame:{type:'images', fit:'contain', src:[IMG.homiesLogo],
-           back:['images/homies.jpg'], backFit:'cover',   /* 🖼️ ta photo au dos */
-           backNote:'Ajoute ta photo : images/homies.jpg'},
+           back:['images/homies.png'], backFit:'cover',   /* 🖼️ ta photo au dos */
+           backNote:'Ajoute ta photo : images/homies.png'},
     deco:[
       {t:'img',src:IMG.neightmare, x:90,y:14, s:80,  r:9, d:.6, rot:6,  op:.9},
       {t:'img',src:IMG.cleanDeal,  x:89,y:82, s:110, r:7, d:1,  rot:-4, op:.85},
@@ -505,6 +505,7 @@ const STORY = [
     chapter:"Chapitre 6 — Rendez-vous", tag:"Code Geass",
     title:"Une dernière quête… IRL.", caption:"Retourne la carte 👉 l’invitation",
     a:"#d3122a", b:"#c8a24a",
+    music:"audio/calme.mp3",       /* 🎵 musique calme sur la dernière slide */
     /* recto : fan art Code Geass (si le lien ne charge pas, mets images/geass.jpg)
        verso : l'invitation d'anniversaire */
     frame:{type:'images', fit:'cover', src:[IMG.geass],
